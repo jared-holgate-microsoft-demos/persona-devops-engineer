@@ -7,8 +7,11 @@ on:
   pull_request:
     branches:
       - main
-      
   workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
   
 jobs:
   pull-request-checks:
@@ -22,12 +25,6 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
-        with:
-          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-          
-      - name: Terraform Workspace
-        id: workspace
-        run: echo "TF_WORKSPACE=${{ secrets.TF_NAME }}" >> $GITHUB_ENV
 
       - name: Terraform Format
         id: fmt
@@ -39,7 +36,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: terraform init -backend=false
         
       - name: Terraform Plan
         id: plan
@@ -74,8 +71,8 @@ jobs:
       - name: Terraform Init
         id: init
         run: |
+          Write-Host $env
           terraform init `
-            -input=false `
             -backend-config="resource_group_name=${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}" `
             -backend-config="storage_account_name=${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}" `
             -backend-config="container_name=${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME }}" `
