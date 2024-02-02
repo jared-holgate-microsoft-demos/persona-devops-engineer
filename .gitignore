@@ -32,3 +32,13 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+.terraform.lock.hcl
+module_setup/.terraform.lock.hcl
+config.tar.gz
+scripts/test-variables.txt
+scripts/test_trigger.ps1
+scripts/test-script.ps1
+.terraform.lock.hcl
+scripts/test-vend.ps1
+scripts/test-destroy.ps1
+scripts/scripts.rar
