@@ -74,7 +74,7 @@ jobs:
       - name: Terraform Init
         id: init
         run: |
-          terraform init`
+          terraform init `
             -input=false `
             -backend-config="resource_group_name=${{ secrets.BACKEND_AZURE_RESOURCE_GROUP_NAME }}" `
             -backend-config="storage_account_name=${{ secrets.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}" `
@@ -82,8 +82,11 @@ jobs:
             -backend-config="key=terraform.tfstate"
         shell: pwsh
         env:
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          USE_AZURE_AD: true
+          USE_OIDC: true
           
       - name: Terraform Apply
         run: terraform apply -auto-approve
@@ -92,3 +95,5 @@ jobs:
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          USE_AZURE_AD: true
+          USE_OIDC: true
